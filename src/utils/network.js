@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { baseUrl, NET, ToastStatus } from './constants';
-import Toast from '../components/Atom/Toast';
+import { baseUrl, MessageStatus, NET } from './constants';
+import Message from '../components/Atom/Message';
 
 const instance = axios.create({
   baseURL: baseUrl,
@@ -19,9 +19,9 @@ instance.interceptors.request.use(
   },
   (error) => {
     // TODO 换成redux
-    Toast({
+    Message({
       message: error.message,
-      status: ToastStatus.ERROR,
+      status: MessageStatus.ERROR,
     });
     return Promise.reject(error.message);
   },

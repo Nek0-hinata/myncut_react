@@ -7,10 +7,16 @@ export const NET = {
   SATOKEN: 'SATOKEN',
 };
 
-export const ToastStatus = {
+export const MessageStatus = {
   LOADING: 'LOADING',
   ERROR: 'ERROR',
   SUCCESS: 'SUCCESS',
+};
+
+export const MessageConfig = {
+  maxCount: 3,
+  defaultMessage: '未知错误',
+  timeout: 3000,
 };
 
 const isPrd = process.env.NODE_ENV === 'production';
