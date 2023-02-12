@@ -14,9 +14,11 @@ export const MessageStatus = {
 };
 
 export const MessageConfig = {
-  maxCount: 3,
+  maxCount: 5,
   defaultMessage: '未知错误',
   timeout: 3000,
+  hideAnimationDuration: 1000,
+  showAnimationDuration: 1000,
 };
 
 const isPrd = process.env.NODE_ENV === 'production';

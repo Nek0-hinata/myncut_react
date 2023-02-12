@@ -4,16 +4,15 @@ import { useDispatch } from 'react-redux';
 import { messageAsyncAdded } from './features/message/MessageSlice';
 import { MessageStatus } from './utils/constants';
 import MessageContainer from './components/Items/MessageContainer';
+import SideBar from './components/ItemsList/SideBar';
 
 const StyledApp = styled.div`
-      height: 100vh;
-      width: 100vw;
     `;
 export default function App() {
   const dispatch = useDispatch();
   return (
     <StyledApp>
-      {/* <SideBar */}
+      <SideBar />
       {/*  leftList={[]} */}
       {/* /> */}
       {/* <ShowList /> */}
@@ -24,6 +23,7 @@ export default function App() {
           dispatch(messageAsyncAdded({
             status: MessageStatus.SUCCESS,
             time: 3000,
+            message: '你好你好你好你好你好你好你好',
           }));
         }}
       >

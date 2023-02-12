@@ -2,33 +2,49 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Message from '../Atom/Message';
-import { messageRemoved } from '../../features/message/MessageSlice';
+import {
+  messageRemoved,
+  selectMessageAll,
+  selectMessageIds,
+  selectMessageTotal,
+} from '../../features/message/MessageSlice';
 
 const StyledMessageContainer = styled.ul`
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
   list-style-type: none;
 `;
 
 export default function MessageContainer() {
-  const messages = useSelector((state) => state.messages.list);
+  const messageTotal = useSelector(selectMessageTotal);
+  const messageIds = useSelector(selectMessageIds);
+  const messageAll = useSelector(selectMessageAll) || [];
   const maxCount = useSelector((state) => state.messages.maxCount);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (messages.length > maxCount) {
-      dispatch(messageRemoved(messages[0]));
+    if (messageTotal > maxCount) {
+      dispatch(messageRemoved({
+        id: messageIds[0],
+      }));
     }
-  }, [dispatch, maxCount, messages]);
+  }, [dispatch, maxCount, messageIds, messageTotal]);
+
+  const messageList = messageAll.map((message) => (
+    <li key={message.id}>
+      <Message
+        message={message.message}
+        time={message.time}
+        status={message.status}
+      />
+    </li>
+  ));
 
   return (
     <StyledMessageContainer>
-      {messages.map(({ status, time }) => (
-        <li>
-          <Message
-            status={status}
-            time={time}
-          />
-        </li>
-      ))}
+      {messageList}
     </StyledMessageContainer>
   );
 }

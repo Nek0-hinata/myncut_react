@@ -1,11 +1,22 @@
-import { createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit'
+import {
+  createAsyncThunk,
+  createEntityAdapter,
+  createSlice,
+  nanoid,
+} from '@reduxjs/toolkit'
 import { MessageConfig, MessageStatus } from '../../utils/constants'
+
+const messageAdapter = createEntityAdapter({
+  sortComparer: (a, b) => a.date.localeCompare(b.date)
+})
 
 export const messageAsyncAdded = createAsyncThunk(
   'messages/messageAdded',
-  async ({status = MessageStatus.ERROR, time = MessageConfig.timeout}, {dispatch}) => {
+  async (
+    { status = MessageStatus.ERROR, time = MessageConfig.timeout, message = MessageConfig.defaultMessage },
+    { dispatch }) => {
     const action = dispatch(messageAdded({
-      status, time
+      status, time, message
     }))
     setTimeout(() => {
       dispatch(messageRemoved(action.payload))
@@ -15,39 +26,47 @@ export const messageAsyncAdded = createAsyncThunk(
 
 const messageSlice = createSlice({
   name: 'massages',
-  initialState: {
-    list: [],
+  initialState: messageAdapter.getInitialState({
     maxCount: MessageConfig.maxCount
-  },
+  }),
   reducers: {
     messageAdded: {
-      reducer(state, action) {
-        const {time} = action.payload
-        state.list.push(action.payload)
-        setTimeout(() => {
-          messageRemoved(action.payload)
-        }, time)
-      },
-      prepare({status = MessageStatus.ERROR, time = MessageConfig.timeout, message = MessageConfig.defaultMessage}) {
+      reducer : messageAdapter.addOne,
+      prepare ({
+        status = MessageStatus.ERROR,
+        time = MessageConfig.timeout,
+        message = MessageConfig.defaultMessage,
+      }) {
         return {
           payload: {
             id: nanoid(),
             status,
             time,
-            message
-          }
+            message,
+            isLoad: false,
+            isHide: false,
+            date: new Date().toISOString()
+          },
         }
-      }
+      },
     },
     messageRemoved: {
-      reducer(state, action) {
-        const {id: delId} = action.payload
-        state.list = state.list.filter(message => message.id !== delId)
-      }
-    }
-  }
+      reducer (state, action) {
+        const { id: delId } = action.payload
+        messageAdapter.removeOne(state, delId)
+      },
+    },
+  },
 })
 
-export const {messageAdded, messageRemoved} = messageSlice.actions
+export const {
+  selectById: selectMessageById,
+  selectAll: selectMessageAll,
+  selectTotal: selectMessageTotal,
+  selectEntities: selectMessageEntities,
+  selectIds: selectMessageIds
+} = messageAdapter.getSelectors(state => state.messages)
+
+export const { messageAdded, messageRemoved } = messageSlice.actions
 
 export default messageSlice.reducer
