@@ -1,14 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
-export default function ShowList() {
-  const ShowList = styled.div`
+const StyledShowList = styled.div`
       overflow: auto;
       height: 100vh;
       background: brown;
     `;
 
+export default function ShowList(props) {
+  const { children } = props;
   return (
-    <ShowList className="wrapper" />
+    <StyledShowList className="wrapper">
+      {children}
+    </StyledShowList>
   );
 }
+
+ShowList.propTypes = {
+  children: PropTypes.element.isRequired,
+};
