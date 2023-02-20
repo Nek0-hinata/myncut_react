@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 const StyledMenuItem = styled.div`
 `;
 
-export default function MenuItem(props) {
+function MenuItem(props) {
   const { title: { icon = '', text }, path, hasChild } = props;
 
   return (
@@ -27,3 +27,5 @@ MenuItem.propTypes = {
   path: PropTypes.string.isRequired,
   hasChild: PropTypes.bool.isRequired,
 };
+
+export default MenuItem;

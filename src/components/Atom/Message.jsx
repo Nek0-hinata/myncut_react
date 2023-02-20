@@ -71,7 +71,7 @@ function iconSelect(status) {
   }
 }
 
-export default function Message(props) {
+function Message(props) {
   const {
     time, message, status,
   } = props;
@@ -102,3 +102,5 @@ Message.defaultProps = {
   message: MessageConfig.defaultMessage,
   status: MessageStatus.ERROR,
 };
+
+export default Message;

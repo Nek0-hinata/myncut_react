@@ -8,7 +8,7 @@ const StyledShowList = styled.div`
       background: brown;
     `;
 
-export default function ShowList(props) {
+function ShowList(props) {
   const { children } = props;
   return (
     <StyledShowList className="wrapper">
@@ -18,5 +18,7 @@ export default function ShowList(props) {
 }
 
 ShowList.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.node.isRequired,
 };
+
+export default ShowList;

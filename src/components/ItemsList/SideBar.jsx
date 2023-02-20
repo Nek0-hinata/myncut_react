@@ -9,7 +9,7 @@ const StyledSideBar = styled.div`
       background: rebeccapurple;
     `;
 
-export default function SideBar(props) {
+function SideBar(props) {
   const { leftList } = props;
 
   return (
@@ -26,3 +26,5 @@ SideBar.propTypes = {
 SideBar.defaultProps = {
   leftList: [],
 };
+
+export default SideBar;
